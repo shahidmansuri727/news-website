@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NIRBHAY MARG NEWS - Home</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Top header: logo + name + search + account -->
+  <header class="main-header">
+    <div class="logo">
+      <img src="images/logo.png" alt="Logo"/>
+      <h1>NIRBHAY MARG NEWS</h1>
+    </div>
+
+    <div class="header-right">
+      <form id="search-form" class="search">
+        <input id="search-input" type="text" placeholder="Search news..."/>
+        <button type="submit" aria-label="Search">🔍</button>
+      </form>
+      <a class="account-btn" href="login.html">Account</a>
+    </div>
+  </header>
+
+  <!-- Category navigation -->
+  <nav class="categories-nav">
+    <a href="index.html">Home</a>
+    <a href="category.html?category=Politics">Politics</a>
+    <a href="category.html?category=Sports">Sports</a>
+    <a href="category.html?category=Entertainment">Entertainment</a>
+    <a href="category.html?category=Tech">Tech</a>
+    <a href="category.html?category=Local">Local</a>
+  </nav>
+
+  <!-- Breaking news red bar -->
+  <div class="breaking-bar">
+    <strong>Breaking:</strong>
+    <div id="breaking-ticker" class="ticker">Loading...</div>
+  </div>
+
+  <!-- All news -->
+  <main>
+    <section class="section">
+      <h2>All News</h2>
+      <div id="top-stories" class="news-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; NIRBHAY MARG NEWS. All rights reserved.</p>
+  </footer>
+
+  <script src="news.js"></script>
+</body>
+</html>
