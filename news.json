@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Website News Working!",
+    "content": "This is the first news article loaded from news.json.",
+    "category": "General",
+    "date": "2025-09-08"
+  },
+  {
+    "id": 2,
+    "title": "Sports Update",
+    "content": "Sports news will appear here. This is just a test article.",
+    "category": "Sports",
+    "date": "2025-09-08"
+  }
+]
