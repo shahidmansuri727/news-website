@@ -9,7 +9,7 @@ function saveLocalNews(arr){ localStorage.setItem("news", JSON.stringify(arr)); 
 async function loadNews(){
   let jsonNews = [];
   try {
-    const res = await fetch("data/news.json");
+    const res = await fetch("news.json");
     jsonNews = await res.json();
   } catch (e) { console.warn("news.json not loaded", e); }
   const local = getLocalNews();
@@ -127,3 +127,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
   renderArticle();
   attachSearch();
 });
+
