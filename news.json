@@ -1,16 +1,456 @@
 [
   {
     "id": 1,
-    "title": "Website News Working!",
-    "content": "This is the first news article loaded from news.json.",
-    "category": "General",
-    "date": "2025-09-08"
+    "title": "Election Updates 2025",
+    "summary": "Latest results from national elections.",
+    "content": "Detailed coverage of the 2025 elections with live updates and expert analysis.",
+    "category": "Politics",
+    "date": "2025-09-01",
+    "image": "default.jpg"
   },
   {
     "id": 2,
-    "title": "Sports Update",
-    "content": "Sports news will appear here. This is just a test article.",
+    "title": "Government Announces New Reforms",
+    "summary": "Major policy changes introduced.",
+    "content": "The government has announced new reforms that will impact citizens nationwide.",
+    "category": "Politics",
+    "date": "2025-09-02",
+    "image": "default.jpg"
+  },
+  {
+    "id": 3,
+    "title": "International Summit in Geneva",
+    "summary": "World leaders meet for global discussions.",
+    "content": "Leaders from around the globe gathered in Geneva to discuss climate and trade.",
+    "category": "Politics",
+    "date": "2025-09-03",
+    "image": "default.jpg"
+  },
+  {
+    "id": 4,
+    "title": "New Education Bill Passed",
+    "summary": "Parliament approves new education reforms.",
+    "content": "A landmark education bill has been passed to improve access to schools and universities.",
+    "category": "Politics",
+    "date": "2025-09-04",
+    "image": "default.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Opposition Criticizes Budget",
+    "summary": "Strong reaction to financial plan.",
+    "content": "Opposition leaders have criticized the national budget, calling it unrealistic.",
+    "category": "Politics",
+    "date": "2025-09-05",
+    "image": "default.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Sports Minister Resigns",
+    "summary": "Political drama unfolds.",
+    "content": "The Sports Minister has resigned following corruption allegations.",
+    "category": "Politics",
+    "date": "2025-09-06",
+    "image": "default.jpg"
+  },
+  {
+    "id": 7,
+    "title": "New Environmental Policy",
+    "summary": "Focus on green energy.",
+    "content": "The government announced new policies to reduce carbon emissions.",
+    "category": "Politics",
+    "date": "2025-09-07",
+    "image": "default.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Healthcare Spending Increase",
+    "summary": "Funding boost for hospitals.",
+    "content": "Healthcare services are set to receive an increase in funding for better facilities.",
+    "category": "Politics",
+    "date": "2025-09-08",
+    "image": "default.jpg"
+  },
+  {
+    "id": 9,
+    "title": "Defense Strategy Announced",
+    "summary": "Military modernization plan revealed.",
+    "content": "The Defense Ministry unveiled a new strategy focusing on modernization.",
+    "category": "Politics",
+    "date": "2025-09-09",
+    "image": "default.jpg"
+  },
+  {
+    "id": 10,
+    "title": "Parliament Debate Heats Up",
+    "summary": "Fiery exchanges between MPs.",
+    "content": "Today's parliamentary session saw heated debates over new laws.",
+    "category": "Politics",
+    "date": "2025-09-10",
+    "image": "default.jpg"
+  },
+
+  {
+    "id": 11,
+    "title": "Football World Cup Preview",
+    "summary": "Teams prepare for the tournament.",
+    "content": "The 2025 Football World Cup is fast approaching with teams finalizing squads.",
     "category": "Sports",
-    "date": "2025-09-08"
+    "date": "2025-09-01",
+    "image": "default.jpg"
+  },
+  {
+    "id": 12,
+    "title": "Olympic Games Countdown",
+    "summary": "Athletes gear up for competition.",
+    "content": "Preparations are underway for the upcoming Olympic Games.",
+    "category": "Sports",
+    "date": "2025-09-02",
+    "image": "default.jpg"
+  },
+  {
+    "id": 13,
+    "title": "Cricket Championship Highlights",
+    "summary": "Big wins in recent matches.",
+    "content": "The cricket championship continues with thrilling matches and close finishes.",
+    "category": "Sports",
+    "date": "2025-09-03",
+    "image": "default.jpg"
+  },
+  {
+    "id": 14,
+    "title": "Tennis Star Retires",
+    "summary": "Emotional farewell.",
+    "content": "A legendary tennis player announced retirement after two decades of success.",
+    "category": "Sports",
+    "date": "2025-09-04",
+    "image": "default.jpg"
+  },
+  {
+    "id": 15,
+    "title": "Basketball League Finals",
+    "summary": "Top teams face off.",
+    "content": "The basketball league finals are set to bring exciting competition.",
+    "category": "Sports",
+    "date": "2025-09-05",
+    "image": "default.jpg"
+  },
+  {
+    "id": 16,
+    "title": "Marathon in New York",
+    "summary": "Thousands participate.",
+    "content": "The annual New York marathon saw thousands of participants from around the world.",
+    "category": "Sports",
+    "date": "2025-09-06",
+    "image": "default.jpg"
+  },
+  {
+    "id": 17,
+    "title": "Swimming Records Broken",
+    "summary": "Athletes make history.",
+    "content": "New world records were set in the international swimming competition.",
+    "category": "Sports",
+    "date": "2025-09-07",
+    "image": "default.jpg"
+  },
+  {
+    "id": 18,
+    "title": "Golf Tournament Update",
+    "summary": "Close competition continues.",
+    "content": "Golfers continue to battle for the championship title in a tense tournament.",
+    "category": "Sports",
+    "date": "2025-09-08",
+    "image": "default.jpg"
+  },
+  {
+    "id": 19,
+    "title": "Boxing Title Match",
+    "summary": "Heavyweights face off.",
+    "content": "Two heavyweight champions faced off in an intense boxing match.",
+    "category": "Sports",
+    "date": "2025-09-09",
+    "image": "default.jpg"
+  },
+  {
+    "id": 20,
+    "title": "Esports Championship",
+    "summary": "Gaming at its peak.",
+    "content": "The Esports championship saw record-breaking viewership this year.",
+    "category": "Sports",
+    "date": "2025-09-10",
+    "image": "default.jpg"
+  },
+
+  {
+    "id": 21,
+    "title": "New Movie Release",
+    "summary": "Blockbuster hits theaters.",
+    "content": "The highly anticipated movie has finally hit theaters worldwide.",
+    "category": "Entertainment",
+    "date": "2025-09-01",
+    "image": "default.jpg"
+  },
+  {
+    "id": 22,
+    "title": "Music Festival Kicks Off",
+    "summary": "Thousands attend annual event.",
+    "content": "The annual music festival started today with huge crowds and performances.",
+    "category": "Entertainment",
+    "date": "2025-09-02",
+    "image": "default.jpg"
+  },
+  {
+    "id": 23,
+    "title": "TV Series Finale",
+    "summary": "Fans react to ending.",
+    "content": "The final episode of the hit TV series aired, sparking strong fan reactions.",
+    "category": "Entertainment",
+    "date": "2025-09-03",
+    "image": "default.jpg"
+  },
+  {
+    "id": 24,
+    "title": "Celebrity Charity Event",
+    "summary": "Stars gather for a cause.",
+    "content": "Famous celebrities gathered at a charity gala to raise funds.",
+    "category": "Entertainment",
+    "date": "2025-09-04",
+    "image": "default.jpg"
+  },
+  {
+    "id": 25,
+    "title": "Award Show Winners",
+    "summary": "Big night in Hollywood.",
+    "content": "The annual award show celebrated the best achievements in film and music.",
+    "category": "Entertainment",
+    "date": "2025-09-05",
+    "image": "default.jpg"
+  },
+  {
+    "id": 26,
+    "title": "New Album Tops Charts",
+    "summary": "Record-breaking release.",
+    "content": "A popular artist's latest album topped the charts within days of release.",
+    "category": "Entertainment",
+    "date": "2025-09-06",
+    "image": "default.jpg"
+  },
+  {
+    "id": 27,
+    "title": "Broadway Show Opens",
+    "summary": "Theater fans rejoice.",
+    "content": "A new Broadway show opened to critical acclaim and sold-out audiences.",
+    "category": "Entertainment",
+    "date": "2025-09-07",
+    "image": "default.jpg"
+  },
+  {
+    "id": 28,
+    "title": "Streaming Platform Expansion",
+    "summary": "New content announced.",
+    "content": "A major streaming platform announced new shows and global expansion.",
+    "category": "Entertainment",
+    "date": "2025-09-08",
+    "image": "default.jpg"
+  },
+  {
+    "id": 29,
+    "title": "Documentary Release",
+    "summary": "Exploring real stories.",
+    "content": "A new documentary sheds light on environmental issues.",
+    "category": "Entertainment",
+    "date": "2025-09-09",
+    "image": "default.jpg"
+  },
+  {
+    "id": 30,
+    "title": "Comedian's World Tour",
+    "summary": "Stand-up around the globe.",
+    "content": "A famous comedian announced an international tour covering 20 countries.",
+    "category": "Entertainment",
+    "date": "2025-09-10",
+    "image": "default.jpg"
+  },
+
+  {
+    "id": 31,
+    "title": "New Smartphone Launched",
+    "summary": "Tech giant unveils flagship.",
+    "content": "A leading tech company launched its new flagship smartphone with advanced features.",
+    "category": "Technology",
+    "date": "2025-09-01",
+    "image": "default.jpg"
+  },
+  {
+    "id": 32,
+    "title": "AI Breakthrough",
+    "summary": "Smarter machines emerge.",
+    "content": "Researchers announced a breakthrough in artificial intelligence capabilities.",
+    "category": "Technology",
+    "date": "2025-09-02",
+    "image": "default.jpg"
+  },
+  {
+    "id": 33,
+    "title": "SpaceX Launch Success",
+    "summary": "Mission accomplished.",
+    "content": "SpaceX successfully launched another mission to the International Space Station.",
+    "category": "Technology",
+    "date": "2025-09-03",
+    "image": "default.jpg"
+  },
+  {
+    "id": 34,
+    "title": "New Electric Car Announced",
+    "summary": "Eco-friendly transport.",
+    "content": "An automaker revealed a new electric vehicle with extended battery range.",
+    "category": "Technology",
+    "date": "2025-09-04",
+    "image": "default.jpg"
+  },
+  {
+    "id": 35,
+    "title": "Breakthrough in Quantum Computing",
+    "summary": "Future of processing.",
+    "content": "Scientists achieved a major milestone in quantum computing performance.",
+    "category": "Technology",
+    "date": "2025-09-05",
+    "image": "default.jpg"
+  },
+  {
+    "id": 36,
+    "title": "Cybersecurity Alert",
+    "summary": "Major hack discovered.",
+    "content": "Authorities warn of a global cyberattack affecting thousands of businesses.",
+    "category": "Technology",
+    "date": "2025-09-06",
+    "image": "default.jpg"
+  },
+  {
+    "id": 37,
+    "title": "Social Media Update",
+    "summary": "New features added.",
+    "content": "A popular social media platform introduced new features for user safety.",
+    "category": "Technology",
+    "date": "2025-09-07",
+    "image": "default.jpg"
+  },
+  {
+    "id": 38,
+    "title": "Robotics in Healthcare",
+    "summary": "Helping patients recover.",
+    "content": "Robots are now assisting in surgeries and patient care worldwide.",
+    "category": "Technology",
+    "date": "2025-09-08",
+    "image": "default.jpg"
+  },
+  {
+    "id": 39,
+    "title": "New App Goes Viral",
+    "summary": "Millions download instantly.",
+    "content": "A new mobile app became the most downloaded in record time.",
+    "category": "Technology",
+    "date": "2025-09-09",
+    "image": "default.jpg"
+  },
+  {
+    "id": 40,
+    "title": "Tech Conference 2025",
+    "summary": "Industry leaders meet.",
+    "content": "Top tech leaders gathered at the global tech conference to discuss innovations.",
+    "category": "Technology",
+    "date": "2025-09-10",
+    "image": "default.jpg"
+  },
+
+  {
+    "id": 41,
+    "title": "Local Farmers Market",
+    "summary": "Fresh produce for community.",
+    "content": "The weekly farmers market featured fresh fruits, vegetables, and handmade goods.",
+    "category": "Local",
+    "date": "2025-09-01",
+    "image": "default.jpg"
+  },
+  {
+    "id": 42,
+    "title": "New School Opens",
+    "summary": "Education boost for town.",
+    "content": "A new public school has opened, giving opportunities to hundreds of children.",
+    "category": "Local",
+    "date": "2025-09-02",
+    "image": "default.jpg"
+  },
+  {
+    "id": 43,
+    "title": "Community Festival",
+    "summary": "Celebration with food and music.",
+    "content": "The annual community festival attracted locals with music and food stalls.",
+    "category": "Local",
+    "date": "2025-09-03",
+    "image": "default.jpg"
+  },
+  {
+    "id": 44,
+    "title": "Local Road Repairs",
+    "summary": "City announces maintenance work.",
+    "content": "Major road repairs are scheduled for next week to improve traffic flow.",
+    "category": "Local",
+    "date": "2025-09-04",
+    "image": "default.jpg"
+  },
+  {
+    "id": 45,
+    "title": "Public Library Renovation",
+    "summary": "Modern facilities introduced.",
+    "content": "The local library reopened with new digital resources and facilities.",
+    "category": "Local",
+    "date": "2025-09-05",
+    "image": "default.jpg"
+  },
+  {
+    "id": 46,
+    "title": "Charity Run for Hospital",
+    "summary": "Locals raise funds for healthcare.",
+    "content": "Hundreds participated in a charity run to support the local hospital.",
+    "category": "Local",
+    "date": "2025-09-06",
+    "image": "default.jpg"
+  },
+  {
+    "id": 47,
+    "title": "City Council Meeting",
+    "summary": "Important decisions taken.",
+    "content": "The council discussed safety, transport, and education in its monthly meeting.",
+    "category": "Local",
+    "date": "2025-09-07",
+    "image": "default.jpg"
+  },
+  {
+    "id": 48,
+    "title": "Local Art Exhibition",
+    "summary": "Artists showcase talent.",
+    "content": "The art exhibition featured works from local artists in the community hall.",
+    "category": "Local",
+    "date": "2025-09-08",
+    "image": "default.jpg"
+  },
+  {
+    "id": 49,
+    "title": "New Park Opened",
+    "summary": "Families enjoy green space.",
+    "content": "The mayor inaugurated a new park for families and children to enjoy.",
+    "category": "Local",
+    "date": "2025-09-09",
+    "image": "default.jpg"
+  },
+  {
+    "id": 50,
+    "title": "Local Business Fair",
+    "summary": "Entrepreneurs promote products.",
+    "content": "Small businesses gathered to showcase and sell their latest products.",
+    "category": "Local",
+    "date": "2025-09-10",
+    "image": "default.jpg"
   }
 ]
