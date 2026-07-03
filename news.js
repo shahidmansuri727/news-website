@@ -13,6 +13,7 @@ async function loadNews(){
   try {
     const querySnapshot = await getDocs(collection(db, "articles"));
     querySnapshot.forEach((doc) => {
+      // Push the document ID alongside the data
       newsArray.push({ id: doc.id, ...doc.data() });
     });
   } catch (e) { 
