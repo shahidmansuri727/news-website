@@ -1,17 +1,17 @@
-// Import Firebase logic (ensure firebase-config.js is in the same folder)
-import { db } from "../firebase-config.js";
+// FIXED: Changed path from "../firebase-config.js" to "./firebase-config.js"
+import { db } from "./firebase-config.js";
 import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // --- Protect page ---
+// FIXED: Changed redirect from "../login.html" to "login.html"
 if(localStorage.getItem("isLoggedIn") !== "true"){
-  location.href = "../login.html";
+  location.href = "login.html";
 }
 
 // --- Add article ---
 document.getElementById("news-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   
-  // Change button text while saving so you know it's working
   const submitBtn = e.target.querySelector('button[type="submit"]');
   submitBtn.textContent = "Adding News...";
   submitBtn.disabled = true;
@@ -28,16 +28,14 @@ document.getElementById("news-form").addEventListener("submit", async (e) => {
   };
 
   try {
-    // Send to Firebase
     await addDoc(collection(db, "articles"), article);
     alert("News added globally!");
     e.target.reset();
-    renderNewsList(); // Refresh the list automatically
+    renderNewsList(); 
   } catch (error) {
     console.error("Error adding document: ", error);
-    alert("Failed to add news. Check the developer console for details.");
+    alert("Failed to add news. Check console.");
   } finally {
-    // Reset button
     submitBtn.textContent = "Add News";
     submitBtn.disabled = false;
   }
@@ -46,20 +44,16 @@ document.getElementById("news-form").addEventListener("submit", async (e) => {
 // --- List / Delete ---
 async function renderNewsList() {
   const listEl = document.getElementById("news-list");
-  listEl.innerHTML = "<p>Loading live news from database...</p>";
+  listEl.innerHTML = "<p>Loading live news...</p>";
 
   try {
-    // Fetch all articles from Firebase
     const querySnapshot = await getDocs(collection(db, "articles"));
     const list = [];
     querySnapshot.forEach((doc) => {
-      // Push the document ID alongside the data so we can delete it later
       list.push({ id: doc.id, ...doc.data() });
     });
 
-    // Sort by newest first
     list.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-
     listEl.innerHTML = list.length ? "" : "<p>No news articles added yet.</p>";
 
     list.forEach((a) => {
@@ -71,15 +65,13 @@ async function renderNewsList() {
         <button data-id="${a.id}">Delete</button>
       `;
       
-      // Delete event listener
       div.querySelector("button").addEventListener("click", async (e) => {
         const docId = e.target.getAttribute("data-id");
-        if(confirm("Are you sure you want to delete this article from the live site?")) {
+        if(confirm("Are you sure you want to delete this article?")) {
           e.target.textContent = "Deleting...";
           try {
-            // Delete from Firebase
             await deleteDoc(doc(db, "articles", docId));
-            renderNewsList(); // Refresh the list
+            renderNewsList(); 
           } catch(error) {
             console.error("Error deleting document: ", error);
             alert("Failed to delete.");
@@ -92,15 +84,15 @@ async function renderNewsList() {
     });
   } catch (error) {
     console.error("Error fetching news: ", error);
-    listEl.innerHTML = "<p>Error loading news. Make sure Firebase is configured correctly.</p>";
+    listEl.innerHTML = "<p>Error loading news. Check Firebase configuration keys.</p>";
   }
 }
 
-// Initial load of the news list
 renderNewsList();
 
 // --- Logout ---
 document.getElementById("logout-btn").addEventListener("click", () => {
   localStorage.removeItem("isLoggedIn");
-  location.href = "../login.html";
+  // FIXED: Changed redirect from "../login.html" to "login.html"
+  location.href = "login.html";
 });
