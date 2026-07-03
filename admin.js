@@ -1,4 +1,4 @@
-// Import Firebase logic (adjust the path to your firebase-config.js if needed)
+// Import Firebase logic (ensure firebase-config.js is in the same folder)
 import { db } from "../firebase-config.js";
 import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
