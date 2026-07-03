@@ -29,8 +29,11 @@
 
       <label>Category</label>
       <select id="category" required>
-        <option>Politics</option><option>Sports</option>
-        <option>Entertainment</option><option>Tech</option><option>Local</option>
+        <option>Politics</option>
+        <option>Sports</option>
+        <option>Entertainment</option>
+        <option>Tech</option>
+        <option>Local</option>
       </select>
 
       <label>Image URL</label>
@@ -39,7 +42,9 @@
       <label>Video URL (optional)</label>
       <input type="text" id="video" placeholder="https://...">
 
-      <label><input type="checkbox" id="breaking"> Breaking News</label>
+      <label>
+        <input type="checkbox" id="breaking"> Breaking News
+      </label>
 
       <button type="submit">Add News</button>
     </form>
@@ -48,8 +53,10 @@
     <div id="news-list"></div>
   </main>
 
-  <footer><p>&copy;20NEWS VISNAGAR</p></footer>
-  <script src="admin.js"></script>
+  <footer>
+    <p>&copy; 20NEWS VISNAGAR</p>
+  </footer>
+  
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
-
