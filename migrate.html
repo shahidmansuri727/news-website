@@ -3,105 +3,553 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Database Migration</title>
+  <title>Upload Latest 50 Articles</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; text-align: center; }
-    button { background: #3498db; color: white; border: none; padding: 1rem 2rem; font-size: 1.2rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    button { background: #e74c3c; color: white; border: none; padding: 1rem 2rem; font-size: 1.2rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
     button:disabled { background: #95a5a6; cursor: not-allowed; }
     #status { margin-top: 1.5rem; font-size: 1.2rem; font-weight: bold; color: #2c3e50; }
   </style>
 </head>
 <body>
 
-  <h2>Firebase Database Migration</h2>
-  <p>Click the button below to permanently move your 50 old articles into your live Firestore Database.</p>
+  <h2>Upload 50 Live Articles (With Media)</h2>
+  <p>Click below to push the latest July 2026 news (with photos and videos) to your database.</p>
   
-  <button id="migrate-btn">Upload 50 Articles to Firebase</button>
+  <button id="migrate-btn">Upload Latest News</button>
   <p id="status"></p>
 
   <script type="module">
     import { db } from "./firebase-config.js";
     import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Here are all 50 of your original articles!
-    const oldArticles = [
-      { "title": "Government Approves New Education Policy", "summary": "A quick look into government approves new education policy.", "content": "Government Approves New Education Policy — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-21", "image": "default.jpg", "video": "", "breaking": true },
-      { "title": "Parliament Debates Climate Action Bill", "summary": "A quick look into parliament debates climate action bill.", "content": "Parliament Debates Climate Action Bill — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-22", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Opposition Criticizes Tax Reforms", "summary": "A quick look into opposition criticizes tax reforms.", "content": "Opposition Criticizes Tax Reforms — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-23", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Prime Minister Visits Rural Areas", "summary": "A quick look into prime minister visits rural areas.", "content": "Prime Minister Visits Rural Areas — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-24", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Election Commission Announces Poll Dates", "summary": "A quick look into election commission announces poll dates.", "content": "Election Commission Announces Poll Dates — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-25", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "New Law on Cybersecurity Passed", "summary": "A quick look into new law on cybersecurity passed.", "content": "New Law on Cybersecurity Passed — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-26", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Protests Erupt Over Fuel Prices", "summary": "A quick look into protests erupt over fuel prices.", "content": "Protests Erupt Over Fuel Prices — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-27", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Cabinet Reshuffle Brings New Faces", "summary": "A quick look into cabinet reshuffle brings new faces.", "content": "Cabinet Reshuffle Brings New Faces — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-28", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Foreign Policy Summit Concludes", "summary": "A quick look into foreign policy summit concludes.", "content": "Foreign Policy Summit Concludes — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-29", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Youth Wing Demands More Opportunities", "summary": "A quick look into youth wing demands more opportunities.", "content": "Youth Wing Demands More Opportunities — This article provides detailed coverage of politics news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Politics", "date": "2025-08-30", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "National Team Wins Football Championship", "summary": "A quick look into national team wins football championship.", "content": "National Team Wins Football Championship — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-08-31", "image": "default.jpg", "video": "", "breaking": true },
-      { "title": "Star Cricketer Announces Retirement", "summary": "A quick look into star cricketer announces retirement.", "content": "Star Cricketer Announces Retirement — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-01", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Olympics Preparations in Full Swing", "summary": "A quick look into olympics preparations in full swing.", "content": "Olympics Preparations in Full Swing — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-02", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Local Marathon Draws Record Participants", "summary": "A quick look into local marathon draws record participants.", "content": "Local Marathon Draws Record Participants — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-03", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Tennis Champion Secures 20th Grand Slam", "summary": "A quick look into tennis champion secures 20th grand slam.", "content": "Tennis Champion Secures 20th Grand Slam — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-04", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Basketball League Kicks Off New Season", "summary": "A quick look into basketball league kicks off new season.", "content": "Basketball League Kicks Off New Season — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-05", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Fans Celebrate Historic Hockey Victory", "summary": "A quick look into fans celebrate historic hockey victory.", "content": "Fans Celebrate Historic Hockey Victory — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-06", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Athletics Meet Breaks Records", "summary": "A quick look into athletics meet breaks records.", "content": "Athletics Meet Breaks Records — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-07", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Coach Praises Young Talent", "summary": "A quick look into coach praises young talent.", "content": "Coach Praises Young Talent — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-08", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Stadium Renovation Completed Ahead of Cup", "summary": "A quick look into stadium renovation completed ahead of cup.", "content": "Stadium Renovation Completed Ahead of Cup — This article provides detailed coverage of sports news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Sports", "date": "2025-09-09", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Blockbuster Movie Breaks Box Office Records", "summary": "A quick look into blockbuster movie breaks box office records.", "content": "Blockbuster Movie Breaks Box Office Records — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-10", "image": "default.jpg", "video": "", "breaking": true },
-      { "title": "Popular Singer Drops New Album", "summary": "A quick look into popular singer drops new album.", "content": "Popular Singer Drops New Album — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-11", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Theater Festival Attracts Thousands", "summary": "A quick look into theater festival attracts thousands.", "content": "Theater Festival Attracts Thousands — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-12", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Streaming Platform Launches New Series", "summary": "A quick look into streaming platform launches new series.", "content": "Streaming Platform Launches New Series — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-13", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Actor Wins International Award", "summary": "A quick look into actor wins international award.", "content": "Actor Wins International Award — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-14", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "TV Show Finale Leaves Fans Emotional", "summary": "A quick look into tv show finale leaves fans emotional.", "content": "TV Show Finale Leaves Fans Emotional — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-15", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Fashion Week Showcases Local Designers", "summary": "A quick look into fashion week showcases local designers.", "content": "Fashion Week Showcases Local Designers — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-16", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Documentary on Wildlife Goes Viral", "summary": "A quick look into documentary on wildlife goes viral.", "content": "Documentary on Wildlife Goes Viral — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-17", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Comedy Night Draws Celebrities", "summary": "A quick look into comedy night draws celebrities.", "content": "Comedy Night Draws Celebrities — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-18", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Historic Play Revived After Decades", "summary": "A quick look into historic play revived after decades.", "content": "Historic Play Revived After Decades — This article provides detailed coverage of entertainment news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Entertainment", "date": "2025-09-19", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Tech Giant Unveils New Smartphone", "summary": "A quick look into tech giant unveils new smartphone.", "content": "Tech Giant Unveils New Smartphone — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-20", "image": "default.jpg", "video": "", "breaking": true },
-      { "title": "Startups Showcase Innovations at Expo", "summary": "A quick look into startups showcase innovations at expo.", "content": "Startups Showcase Innovations at Expo — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-21", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "AI Tool Promises Smarter Healthcare", "summary": "A quick look into ai tool promises smarter healthcare.", "content": "AI Tool Promises Smarter Healthcare — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-22", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Breakthrough in Battery Technology", "summary": "A quick look into breakthrough in battery technology.", "content": "Breakthrough in Battery Technology — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-23", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Cybersecurity Threats on the Rise", "summary": "A quick look into cybersecurity threats on the rise.", "content": "Cybersecurity Threats on the Rise — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-24", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Robotics Fair Highlights Future Trends", "summary": "A quick look into robotics fair highlights future trends.", "content": "Robotics Fair Highlights Future Trends — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-25", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Researchers Develop Quantum Processor", "summary": "A quick look into researchers develop quantum processor.", "content": "Researchers Develop Quantum Processor — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-26", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "E-Governance Platform Launched", "summary": "A quick look into e-governance platform launched.", "content": "E-Governance Platform Launched — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-27", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Virtual Reality Changing Education", "summary": "A quick look into virtual reality changing education.", "content": "Virtual Reality Changing Education — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-28", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "5G Rollout Expands Nationwide", "summary": "A quick look into 5g rollout expands nationwide.", "content": "5G Rollout Expands Nationwide — This article provides detailed coverage of technology news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Technology", "date": "2025-09-29", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "City Launches Clean Water Project", "summary": "A quick look into city launches clean water project.", "content": "City Launches Clean Water Project — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-09-30", "image": "default.jpg", "video": "", "breaking": true },
-      { "title": "Local Market Revamped After Years", "summary": "A quick look into local market revamped after years.", "content": "Local Market Revamped After Years — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-01", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Community Center Opens for Youth", "summary": "A quick look into community center opens for youth.", "content": "Community Center Opens for Youth — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-02", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Mayor Announces New Housing Scheme", "summary": "A quick look into mayor announces new housing scheme.", "content": "Mayor Announces New Housing Scheme — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-03", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Festival Celebrations Begin Downtown", "summary": "A quick look into festival celebrations begin downtown.", "content": "Festival Celebrations Begin Downtown — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-04", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Traffic Improvements Reduce Congestion", "summary": "A quick look into traffic improvements reduce congestion.", "content": "Traffic Improvements Reduce Congestion — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-05", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "New Park Inaugurated for Families", "summary": "A quick look into new park inaugurated for families.", "content": "New Park Inaugurated for Families — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-06", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Local School Wins National Award", "summary": "A quick look into local school wins national award.", "content": "Local School Wins National Award — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-07", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Farmers’ Market Expands Offerings", "summary": "A quick look into farmers’ market expands offerings.", "content": "Farmers’ Market Expands Offerings — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-08", "image": "default.jpg", "video": "", "breaking": false },
-      { "title": "Heritage Building Restored for Tourism", "summary": "A quick look into heritage building restored for tourism.", "content": "Heritage Building Restored for Tourism — This article provides detailed coverage of local news. It explains the background, the main developments, and expert opinions. It also highlights reactions from the public and outlines potential impacts in the coming months. Readers will find context, analysis, and perspectives that make this story relevant and engaging.", "category": "Local", "date": "2025-10-09", "image": "default.jpg", "video": "", "breaking": false }
+    // 50 Real Latest News Articles (July 2026)
+    const latestArticles = [
+      {
+        "title": "Thane Schoolgirl Electrocution Tragedy",
+        "summary": "A 17-year-old schoolgirl died after being electrocuted in rainwater in Thane.",
+        "content": "A 17-year-old schoolgirl died after being electrocuted in rainwater in Thane on July 2. Her family alleged that Torrent Power Limited officials repeatedly ignored complaints about exposed wires.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=800",
+        "video": "https://www.youtube.com/embed/jNQXAC9IVRw",
+        "breaking": true
+      },
+      {
+        "title": "FM Invites French Investors",
+        "summary": "Finance Minister Nirmala Sitharaman invites French investors to partner with India.",
+        "content": "Finance Minister Nirmala invites French investors to partner with India's journey towards Viksit Bharat 2047.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "IMD Issues Red Alert",
+        "summary": "IMD issues Red Alert for heavy to very heavy rainfall.",
+        "content": "The IMD issues Red Alert for heavy to very heavy rainfall across several states. Mumbai and its satellite cities are reeling under intense monsoon rainfall.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1561484930-998b6a7b22e8?w=800",
+        "video": "https://www.youtube.com/embed/jNQXAC9IVRw",
+        "breaking": true
+      },
+      {
+        "title": "BCCI Announces Sri Lanka Series",
+        "summary": "BCCI announces schedule for India's two-match Test series against Sri Lanka.",
+        "content": "The BCCI announces the schedule for India's two-match Test series against Sri Lanka.",
+        "category": "Sports",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Delhi HC on Raghav Chadha",
+        "summary": "Delhi High Court refuses interim protection to Raghav Chadha.",
+        "content": "The Delhi High Court refuses interim protection to Raghav Chadha and directs the takedown of five posts. The court told the BJP MP that public figures must accept satirical criticism.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Sachin Ahir Elected Deputy Chairman",
+        "summary": "Shiv Sena (UBT) MLC Sachin Ahir elected Maharashtra Legislative Council's deputy Chairman.",
+        "content": "Shiv Sena (UBT) MLC Sachin Ahir was elected unopposed to the post of deputy Chairman of the Maharashtra Legislative Council as a candidate of the ruling Mahayuti.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "LPG Prices Reduced",
+        "summary": "Price of commercial LPG reduced as conflict pressures ease.",
+        "content": "Oil-marketing companies reduced the prices of the commercial variant of liquefied petroleum gas (LPG) cylinders by an average of ₹180 per cylinder.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1613214149922-f1809c99b414?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "New Vice-Chief of Air Staff",
+        "summary": "Air Marshal Ashutosh Dixit takes charge as new Vice-Chief of the Air Staff.",
+        "content": "Air Marshal Ashutosh Dixit took charge as the new Vice-Chief of the Air Staff, succeeding Air Marshal Nagesh Kapoor.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Kerala FCRA Resolution",
+        "summary": "Kerala Assembly passes resolution urging Centre to withdraw FCRA rules.",
+        "content": "The Kerala Legislative Assembly passed a resolution urging the Union government to repeal the amendments to the Foreign Contribution (Regulation) Act and Rules.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Apps Disabling E-Rickshaws",
+        "summary": "Centre asks to remove apps being used to remotely disable electric vehicles.",
+        "content": "The government has ordered the removal of three Chinese apps — BAT-BMS, Lossigy and Epoch-i-ion after concerns they were being misused to disable e-rickshaws remotely.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800",
+        "video": "https://www.youtube.com/embed/jNQXAC9IVRw",
+        "breaking": true
+      },
+      {
+        "title": "Ram Temple Theft Row",
+        "summary": "CCTV footage shows accused hiding cash bundles at Ram temple.",
+        "content": "CCTV footage has surfaced showing five key accused removing and hiding cash bundles at the Ram temple. Security at the temple has been overhauled.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1565022536102-f7645c84354a?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Modi New Zealand Visit",
+        "summary": "Modi to make first official visit to New Zealand next week.",
+        "content": "New Zealand Prime Minister Christopher Luxon announced that PM Narendra Modi will make his first official visit to New Zealand next week.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "Indian Seafarer in Venezuela",
+        "summary": "Family of Indian seafarer who died in Venezuela alleges cover-up.",
+        "content": "The family of Rakesh Chauhan, an Indian seafarer who died in Venezuela recently, has raised a series of questions over the handling of his case and demanded the release of the complete autopsy report.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Iran Supreme Leader Funeral Prep",
+        "summary": "Preparations underway ahead of dayslong funeral ceremonies in Tehran.",
+        "content": "A portrait of the slain Iranian Supreme Leader Ayatollah Ali Khamenei hangs at the Imam Khomeini Mosalla Grand Mosque as preparations are underway ahead of his dayslong funeral ceremonies in Tehran.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1542385151-efd9000785a0?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "Bengaluru Daycare Case",
+        "summary": "Police made first arrest in the Capegemini daycare case.",
+        "content": "Bengaluru Police made its first arrest in the Capegemini daycare case where toddlers were allegedly assaulted and intimidated by caregivers.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Childhood Vaccination Rates",
+        "summary": "Childhood vaccination rates have slumped globally.",
+        "content": "Childhood vaccination rates have slumped globally, and in several countries, people are more hesitant about getting vaccinated.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1584483766114-2cea6facdf57?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Govt. Notice to WhatsApp",
+        "summary": "Govt. issues notice to WhatsApp over username feature.",
+        "content": "WhatsApp's new username feature is drawing skepticism from the Union government over potential for spam and impersonation.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "World Bank Climate Targets",
+        "summary": "World Bank scraps climate finance targets after U.S. criticism.",
+        "content": "Following disapproval from the United States administration, the World Bank Group has indicated that it would do away with its funding target for climate-centric projects.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Trinamool Faction ECI Meet",
+        "summary": "Ritabrata Banerjee-led Trinamool faction to meet ECI.",
+        "content": "The Election Commission will meet rebel Trinamool Congress MLAs, led by Ritabrata Banerjee, who have staked claim to be the real party.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Disabled Inmates Rights",
+        "summary": "Disabled inmates must be allowed to self-identify.",
+        "content": "A Kerala-based activist suggested bringing in a mechanism to allow disabled prisoners to self-identify in a recent plea.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Kejriwal on Ram Name",
+        "summary": "Kejriwal alleges BJP used Ram's name for political gains.",
+        "content": "Aam Aadmi Party chief Arvind Kejriwal alleged that the Bharatiya Janata Party has only used Lord Ram's name for political gains.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Fuel Consumption Rises",
+        "summary": "Petrol, diesel consumption rose in June despite price hikes.",
+        "content": "Consumption of petrol and diesel increased 7% and 5.52% respectively in June this year on a year-over-year basis.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1543310467-3388a1b63e9c?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "U.S. and Iran Relations",
+        "summary": "Trump says the U.S. and Iran are getting along very well.",
+        "content": "U.S. President Donald Trump said that the United States was getting along very well with Iran and that recent indirect talks in Qatar went well.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1523995462485-3d171b5c8fa9?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "ENG vs IND 1st T20I",
+        "summary": "Rain forces abandonment; Shreyas, Abhishek shine.",
+        "content": "The first T20I between India and England was abandoned because of incessant rains. Shreyas Iyer composed 68 to help India post 189/7.",
+        "category": "Sports",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800",
+        "video": "https://www.youtube.com/embed/jNQXAC9IVRw",
+        "breaking": false
+      },
+      {
+        "title": "Japan Investment in India",
+        "summary": "Modi wants to bring 10 trillion yen investment from Japan to India by 2036.",
+        "content": "Prime Minister Narendra Modi said he wanted to bring 10 trillion of yen investment from Japan to India in the next 10 years.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "SC on AI-Generated Precedents",
+        "summary": "Supreme Court sets aside orders relying on fake AI precedents.",
+        "content": "The Supreme Court set aside orders passed by the NCLT and NCLAT after finding they relied on fake and AI-generated judicial precedents.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Bengaluru Quarry Collapse",
+        "summary": "7 Bihar workers killed in Bengaluru quarry rock collapse.",
+        "content": "A massive rock collapse at a stone quarry near Bengaluru killed seven migrant workers from Bihar while they were working at the quarry.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "Navi Mumbai Electric Shocks",
+        "summary": "Two women received electric shocks in waterlogged road.",
+        "content": "Two women in Navi Mumbai received electric shocks after stepping on an exposed wire submerged in waterlogged road water.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Manhole Death in Mumbai",
+        "summary": "Man dies after falling into manhole amid heavy rains.",
+        "content": "A man died after being swept into an open manhole in Mumbai amid heavy rains in the Chandivali area.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1561484930-998b6a7b22e8?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Siya-Chetan Murder Prep",
+        "summary": "Investigation finds suspects practiced execution of murder plan.",
+        "content": "Days before they allegedly pushed Ketan Agarwal to his death, Siya Goyal and Chetan Chaudhary practiced how they would execute the murder plan.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Kerala HC Idukki Tree-Felling",
+        "summary": "Kerala High Court seeks government response on tree-felling.",
+        "content": "The Kerala High Court has initiated a suo motu public interest litigation over the alleged large-scale felling of trees in Idukki district.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "UP Boys Drown in Gomti",
+        "summary": "Two boys drown in Gomti river.",
+        "content": "Two 13-year-old boys drowned while bathing in the Gomti River at Neersahiya Ghat in Uttar Pradesh.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Monsoon Session Dates",
+        "summary": "Monsoon session of Parliament likely from July 20.",
+        "content": "The Monsoon session of Parliament is likely to commence from July 20 and is expected to go on for three weeks.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "US Birthright Citizenship",
+        "summary": "U.S. Supreme Court upholds birthright citizenship.",
+        "content": "The United States Supreme Court upheld a broad conception of birthright citizenship, rejecting proposed limits.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "PM Speaks to Iranian President",
+        "summary": "Modi spoke with Iranian President Masoud Pezeshkian.",
+        "content": "Prime Minister Narendra Modi spoke with Iranian President Masoud Pezeshkian as Iran plans a week-long mourning period.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "IMD July Rainfall Deficit",
+        "summary": "Monthly average rainfall expected to be below normal in July.",
+        "content": "Rainfall in July will be below normal, with India's current monsoon deficit at 40%.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1561484930-998b6a7b22e8?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Tamil Nadu VB-G RAM G Scheme",
+        "summary": "Decks cleared for implementation of ₹12,642-crore scheme.",
+        "content": "The Tamil Nadu government notified the Vikshit Bharat Guarantee for Rozgar and Ajeevika Mission Gramin scheme in its gazette.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "UP Congress at Ram Temple",
+        "summary": "Delegation allowed to pray at Ram Temple after face-off.",
+        "content": "A delegation of Congress MPs from Uttar Pradesh offered prayers at the Ram Temple shrine in Ayodhya.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1565022536102-f7645c84354a?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Indus Waters Treaty Valid",
+        "summary": "Pakistan Deputy PM says treaty remains valid, binding.",
+        "content": "Deputy Prime Minister Ishaq Dar said Pakistan rejects India's decision to revoke the Indus Waters Treaty.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Tata Motors Unveils Sierra.ev",
+        "summary": "Tata Motors launches the all-new Sierra.ev starting ₹18.79 lakh.",
+        "content": "Riding on EV demand, Tata Motors launched the Sierra.ev with deliveries starting from July 2026.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800",
+        "video": "https://www.youtube.com/embed/jNQXAC9IVRw",
+        "breaking": false
+      },
+      {
+        "title": "FIFA: Argentina vs Cape Verde",
+        "summary": "World Cup Round of 32 clash.",
+        "content": "Argentina faces Cape Verde at 3:30 AM in a crucial Round of 32 knockout encounter.",
+        "category": "Sports",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1518605368461-1e1e38ce8e50?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "FIFA: Colombia vs Ghana",
+        "summary": "World Cup Round of 32 clash.",
+        "content": "Colombia takes on Ghana at 7:00 AM as football fever grips India.",
+        "category": "Sports",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1518605368461-1e1e38ce8e50?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "FIFA: Australia vs Egypt",
+        "summary": "World Cup Round of 32 clash.",
+        "content": "Australia takes on Egypt at 11:30 PM for a spot in the Round of 16.",
+        "category": "Sports",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1518605368461-1e1e38ce8e50?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Mumbai Showers Intensify",
+        "summary": "Heavy showers sweep Mumbai and neighbouring districts.",
+        "content": "Heavy showers continued to sweep Mumbai, Thane, Raigad, and Palghar on Friday morning.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1561484930-998b6a7b22e8?w=800",
+        "video": "",
+        "breaking": true
+      },
+      {
+        "title": "Mandavi Records 150mm Rain",
+        "summary": "Pockets of the city received over 100 mm of rainfall.",
+        "content": "Data showed that between Thursday and Friday, the heaviest rainfall was recorded in Mandavi that received 150 mm.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1561484930-998b6a7b22e8?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "VHP Speaks on Ram Mandir",
+        "summary": "VHP Spokesperson addresses Ram Mandir donation case.",
+        "content": "VHP Spokesperson Surendra Jain commented on the allegations over the alleged Ram Mandir donation embezzlement case.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1541872516-6881c19c5c7d?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Delhi Transport Minister on EVs",
+        "summary": "Minister addresses e-rickshaws being switched off.",
+        "content": "Delhi transport minister Pankaj Singh said the government is looking into reports of e-rickshaws being shut down using a Chinese application.",
+        "category": "Tech",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "New Zealand PM on India",
+        "summary": "PM Luxon describes India's economy.",
+        "content": "New Zealand Prime Minister Christopher Luxon described India as one of the world's largest and fastest-growing economies.",
+        "category": "World",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "ATF Prices Slashed",
+        "summary": "Aviation turbine fuel prices reduced.",
+        "content": "Prices of aviation turbine fuel for domestic scheduled carriers have been slashed by ₹5 per litre to ₹110 per litre.",
+        "category": "Politics",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800",
+        "video": "",
+        "breaking": false
+      },
+      {
+        "title": "Activist Plea on Prisons",
+        "summary": "Plea suggests mechanism for disabled prisoners.",
+        "content": "A petition suggested bringing in a mechanism to allow disabled prisoners or detainees to self-identify.",
+        "category": "Local",
+        "date": "2026-07-03",
+        "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=800",
+        "video": "",
+        "breaking": false
+      }
     ];
 
     document.getElementById("migrate-btn").addEventListener("click", async (e) => {
       e.target.disabled = true;
       const statusText = document.getElementById("status");
       statusText.style.color = "#2980b9";
-      statusText.textContent = "Connecting to Firebase and uploading... please do not close this page.";
+      statusText.textContent = "Uploading 50 verified articles with media... please wait.";
 
       let successCount = 0;
 
-      for (const article of oldArticles) {
+      for (const article of latestArticles) {
         try {
-          // Send the article to Firebase (Firebase automatically generates a new secure ID)
           await addDoc(collection(db, "articles"), article);
           successCount++;
-          statusText.textContent = `Successfully uploaded ${successCount} out of 50 articles...`;
+          statusText.textContent = `Uploaded ${successCount} out of 50...`;
         } catch (error) {
           console.error("Error uploading article:", error);
           statusText.style.color = "#e74c3c";
-          statusText.textContent = `Error occurred at article ${successCount + 1}. Check the developer console.`;
-          return; // Stop the loop if there's an error
+          statusText.textContent = `Error at article ${successCount + 1}. Check console.`;
+          return; 
         }
       }
 
-      // Success message!
       statusText.style.color = "#27ae60";
-      statusText.textContent = "✅ All 50 articles have been successfully migrated to your live database! You can now delete this file.";
+      statusText.textContent = "✅ All 50 latest news articles (with images & video links) have been successfully added!";
     });
   </script>
 </body>
